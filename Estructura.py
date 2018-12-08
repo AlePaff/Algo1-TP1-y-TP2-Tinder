@@ -233,46 +233,37 @@ def definirSexoInt(sexoInteres):
     return sexoInt
 
 
+   
+   
+   
+def verificarUsuario():
+    nombreDeUsuario=str (input ("Ingrese un nombre de usuario: "))
     
+    if not validarPseudonimo (nombreDeUsuario):
+        nombreDeUsuario = str (input("Usuario invalido, por favor ingrese un usuario que contenga únicamente minúsculas, números o guión bajo."))
+        
+    while (nombreDeUsuario in ejecucionActual["listaUsers"]):
+        print("Usuario ya existente, intente con uno diferente: ")
+        
+        if not validarPseudonimo (nombreDeUsuario):
+            nombreDeUsuario = str (input ("Usuario invalido, por favor ingrese un usuario que contenga únicamente minúsculas, números o guión bajo."))
+            
+        nombreDeUsuario=str (input ("Ingrese un nombre de usuario: "))
+       
+    return nombreDeUsuario
+            
     
+
+        
+        
+        
 def crearUsuario():
-    nombreDeUsuario = str (input ("Ingrese un nombre de usuario: "))
-    
-    
-    #Ejemplo de implementacion
-    if not validarPseudonimo (nombreDeUsuario):  #en caso de que ingreso 5 veces mal el nombre de usuario, ej: si las 5 veces puso mayusculas. 
-        return print("Demasiados intentos")
-    
-    #si ingreso un nombre de usuario valido, entonce continua
-    
-    while (nombreDeUsuario in ejecucionActual["listaUsers"]):#va a ejecutar si el nombreDeUsuario esta en la listaUsers, osea si eso es True
-        nombreDeUsuario = str (input ("Usuario ya existente, intente con uno diferente: "))
-        
-        if not validarPseudonimo (nombreDeUsuario):  #vuelve a verificar si es valido lo que ingreso
-            return print("Demasiados intentos")
-    
-    
-    contraseña = str (input ("Ingrese una contraseña: "))
-    while not validarContraseña(contraseña):
-        print ("Contraseña invalida, por favor ingrese una contraseña que contenga por lo menos una minúscula, un número, una mayúscula y 5 caracteres")
-        contraseña = str (input ("Ingrese una contraseña: "))
-    
-        
+    nombreDeUsuario = verificarUsuario()
+    edad=verificarEdad()
+    sexo=verificarSexo()
+    contraseña=verificarContraseña()
     nombre = str (input ("Ingrese su/s nombre/s: "))
     apellido = str (input ("Ingrese su/s apellido/s: "))
-    
-    sexo = (str (input ("Sexo (seleccione M, F o I): "))).upper ()
-    while (sexo != "M" and sexo != "F" and sexo != "I"):
-        print ("vuelva a ingresar los datos")
-        sexo = (str (input ("Sexo (seleccione M, F o I): "))).upper ()
-       
-    edad = int (input ("Ingrese su edad: "))
-    
-    while not validarEdad (edad):
-        #print ("Debe tener entre 18 y 99 años para registrarse en el sistema.")
-        print("ingrese una edad entre 18 o 99 años")
-        edad = int (input ("Ingrese su edad: "))
-        
     longitud = int (input ("ingrese latitud (entre -90 y 90): "))
     latitud = int (input ("ingrese longitud (entre -90 y 90): "))
     intereses = str (input ("Ingrese sus intereses o hobbies separados por espacios y guiones. Ej.: 'gatos viajar museos-de-arte: "))
@@ -322,34 +313,25 @@ def validarContraseña(contraseña):
 
 
 def validarPseudonimo(pseudonimo):
-    nroIntentos=5   #si el usuario no ingresa algo valido despues de 5 veces, entonces la funcion devuelve False
-    while nroIntentos>0:    #solo se implemento en esta funcion
-    
-        if any(i.isupper () for i in pseudonimo):
-            nroIntentos-=1
-    
-        elif (any (i in "!#$%&/()=?¡¿[]+-{}" for i in pseudonimo)):
-            nroIntentos-=1
-            
-        elif (any (i.isdigit () for i in pseudonimo)) or (any (i == "_" for i in pseudonimo)) or any (letra.islower () for letra in pseudonimo):
-            #si entró a este elif, es porque no hay mayusculas, ni simbolos especiales
-            return True  # ("hay almenos un numero o un guion bajo o una minuscula")
 
-        else:
-            nroIntentos-=1  
-        print ("Usuario invalido, por favor ingrese un usuario que contenga únicamente minúsculas, números o guión bajo.")
-        pseudonimo = str (input ("Ingrese un nombre de usuario: "))
+    if any(i.isupper () for i in pseudonimo):
+        return False
+    
+    elif (any (i in "!#$%&/()=?¡¿[]+-{}" for i in pseudonimo)):
+        return False
         
-    return False
+    elif (any (i.isdigit () for i in pseudonimo)) or (any (i == "_" for i in pseudonimo)) or any (letra.islower () for letra in pseudonimo):
+        #si entró a este elif, es porque no hay mayusculas, ni simbolos especiales
+        return True  # ("hay almenos un numero o un guion bajo o una minuscula")
 
-    
+    else:
+        return False
+
 
     
     
 def validarEdad(edad):
     return 18 <= edad <= 99
-
-
 
 
 # usando Vicenty (necesita geopy)
@@ -358,7 +340,35 @@ def distanciaEntreDos(distancia1, distancia2):
     return vincenty (distancia1, distancia2).km
 
 
+
+def verificarEdad():
     
+    edad = int (input ("Ingrese su edad: "))
+    
+    while not validarEdad (edad):
+        #print ("Debe tener entre 18 y 99 años para registrarse en el sistema.")
+        print("ingrese una edad entre 18 o 99 años")
+        edad = int (input ("Ingrese su edad: "))
+    return edad
+        
+
+        
+        
+def verificarContraseña():
+    contraseña = str (input ("Ingrese una contraseña: "))
+    while not validarContraseña(contraseña):
+        print ("Contraseña invalida, por favor ingrese una contraseña que contenga por lo menos una minúscula, un número, una mayúscula y 5 caracteres")
+        contraseña = str (input ("Ingrese una contraseña: "))
+    return contraseña
+
+    
+    
+def verificarSexo():
+    sexo = (str (input ("Sexo (seleccione M, F o I): "))).upper ()
+    while (sexo != "M" and sexo != "F" and sexo != "I"):
+        print ("vuelva a ingresar los datos")
+        sexo = (str (input ("Sexo (seleccione M, F o I): "))).upper ()
+    return sexo
     
     
 
