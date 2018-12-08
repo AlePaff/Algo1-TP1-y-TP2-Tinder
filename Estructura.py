@@ -1,38 +1,49 @@
-from datos_prueba import datos
-from datos_prueba import diccionarioPrueba
-from datos_prueba import ejecucionActual
+from archivoMerge import datos
+from archivoMerge import ejecucionActual
 from math import floor
 # from math import radians, cos, sin, asin, sqrt  # para la harvensine
 from geopy.distance import vincenty  # instalar geopy, ejecutar desde la consola   tambien funciona con "great_circle"
 
 
-pseu = ""  # se la define globalmente, para despues usarla en las distintas funciones
-listaUsers = []  # es una lista de usuarios global, la cual se actualiza con las claves de los diccionarios, cuando se carga el grupo de persona predeterminado
-
 
 # print ("\n" * 100) una manera de limpiar la pantalla
+
 
 def menuPrincipal():
     opcionesMenuPrincipal = ""  #inicializa la variable
     
-    while opcionesMenuPrincipal!="4":
+    while opcionesMenuPrincipal!="5":
         opcionesMenuPrincipal = input ("""
-(1) CARGAR UN GRUPO DE PERSONAS PREDETERMINADO
+(1) IMPRIMIR USUARIOS REGISTRADOS
 (2) CREAR CUENTA NUEVA
 (3) INGRESAR AL SISTEMA
-(4) CERRAR PROGRAMA
+(4) IMPRIMIR TOP5 USUARIOS
+(5) CERRAR PROGRAMA
 Escriba el numero de opcion deseada: 
 """)
         if opcionesMenuPrincipal == "1":
+			#el diccionario datos, ya va a estar ordenado, en esta parte simplemente es un for que imprime a todos los del diccionario
+			
+			
+			
             datos.update (diccionarioPrueba)    #va a añadir diccionarioPrueba al diccionario "datos", si hay valores iguales, los va a actualizar
             ejecucionActual["listaUsers"]=list(datos.keys()) #asigna a listaUsers una lista, que tiene como elementos todos los valores del diccionario "datos"
+			
+			
             
         elif opcionesMenuPrincipal == "2":
             crearUsuario () # llama una func, la cual sirve para cargar datos, y esto aladirlos al diccionario principal, osea a "datos"
             
         elif opcionesMenuPrincipal == "3":
             ingresarSistema ()
-        elif opcionesMenuPrincipal=="4":    #se pone esta opciones porque sino, iría directo al else, y saldria del programa, pero mostrrando el cartel "por favor ingrese una...."
+        elif opcionesMenuPrincipal=="4":
+			#imprime el diccionario por la cantidad de likes que tengan los usuarios
+			
+			#recorre el diccionario solo una vez y va tomando la cantidad de likes que tenga cada uno de los usuarios
+			#y los va almacenando los valores en una lista, (con un while, que su condicion esque la lista solo tenga una longitud de 5)
+			#finalmente imprime la lista completa, es decir el top 5 usuarios
+            
+        elif opcionesMenuPrincipal=="5":
             return
         else:
             print ("Por favor, ingrese una de las opciones")
@@ -47,7 +58,7 @@ def ingresarSistema():
     if ejecucionActual["pseu"] in ejecucionActual["listaUsers"]:
         contraseña = input ("Ingrese su contraseña: ")
         if contraseña == datos[ejecucionActual["pseu"]]["contraseña"]:
-            print ("Bienvenide a Tinder", datos[ejecucionActual["pseu"]]["nombre"])
+            print ("Hola ", datos[ejecucionActual["pseu"]]["nombre"])
             menuSecundario ()
         else:
             print ("Contraseña incorrecta")
@@ -239,16 +250,12 @@ def definirSexoInt(sexoInteres):
 def verificarUsuario():
     nombreDeUsuario=str (input ("Ingrese un nombre de usuario: "))
     
-    if not validarPseudonimo (nombreDeUsuario):
-        nombreDeUsuario = str (input("Usuario invalido, por favor ingrese un usuario que contenga únicamente minúsculas, números o guión bajo."))
-        
-    while (nombreDeUsuario in ejecucionActual["listaUsers"]):
-        print("Usuario ya existente, intente con uno diferente: ")
+    while (nombreDeUsuario in ejecucionActual["listaUsers"]) or (not validarPseudonimo (nombreDeUsuario)):
+        if (nombreDeUsuario in ejecucionActual["listaUsers"]):
+            nombreDeUsuario = str (input ("Usuario ya existente, intente con uno diferente: "))
         
         if not validarPseudonimo (nombreDeUsuario):
             nombreDeUsuario = str (input ("Usuario invalido, por favor ingrese un usuario que contenga únicamente minúsculas, números o guión bajo."))
-            
-        nombreDeUsuario=str (input ("Ingrese un nombre de usuario: "))
        
     return nombreDeUsuario
             
@@ -259,9 +266,9 @@ def verificarUsuario():
         
 def crearUsuario():
     nombreDeUsuario = verificarUsuario()
+    contraseña=verificarContraseña()
     edad=verificarEdad()
     sexo=verificarSexo()
-    contraseña=verificarContraseña()
     nombre = str (input ("Ingrese su/s nombre/s: "))
     apellido = str (input ("Ingrese su/s apellido/s: "))
     longitud = int (input ("ingrese latitud (entre -90 y 90): "))
@@ -382,5 +389,24 @@ except:
     print("\n\nHubo un error durante la ejecucion\nCerrando el programa")
 '''
 
+
+#--------BLOQUE PRINCIPAL----------
+
+nuevosUsuarios=open(r"nuevosUsuario.pkl","wb")
+usuariosPredefinidos=open(r"usuariosPredefinidos.csv","r")
+
+#merge entre pickle y diccionario, a un unico diccionario llamado datos, el cual será guardado ordenadamente por el nombre de usuario
+
+#cuando se crea un nuevo usuario, sus datos son guardados al archivo pickle y se actualizan al diccionario datos (ordenadamente)
+
 menuPrincipal()
+
+nuevosUsuarios.close()
+usuariosPredefinidos.close()
+
+
+
+
+
+
 
