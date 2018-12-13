@@ -382,19 +382,46 @@ def verificarSexo():
 
    
 def mergePickleCsv(archivoPickle, archivoCsv):   #recibe un archivo en formato csv y uno en formato pickle y devuelve un diccionario, de ambos
-	
-while True:
+    mergeDeAmbos={}
+    
+    #lee el pickle
     try:
-        usuarios=load(archivoPickle)
-        print(var,"\n")
+        while True:
+            usuariosEnPickle=load(archivoPickle)
+            mergeDeAmbos.update(usuariosEnPickle)
     except EOFError:
-        break
-archivoPickle.close()
-    var=load(archivoPickle)
-	
-	
-	
+        pass
+        
+        
+    #lee el csv
+    pseudonimo,nombre,apellido,contraseña,sexo,edad,latitud,longitud, intereses, likes,mensajes = leer_archivo(archivoCsv)
+    while pseudonimo:
+        pseudonimo: {
+            "nombre": nombre,
+            "apellido": apellido,
+            "contraseña": contraseña,
+            "sexo": sexo,
+            "edad": edad,
+            "ubicacion": [longitud, latitud],
+            "intereses": intereses,
+            "likes":likes,
+            "mensajes": mensajes
+			}
+        mergeDeAmbos.update(pseudonimo)
+        pseudonimo,nombre,apellido,contraseña,sexo,edad,latitud,longitud, intereses, likes,mensajes = leer_archivo(archivoCsv)
+    return mergeDeAmbos
+    
 
+    
+def leer_archivo(archivo):
+    linea = archivo.readline()  #lee la siguiente linea gracias al readline, que luego de usar este comando, se deja en la posicion en la que estaba el archivo
+    if linea:   #si la linea tiene texto...
+        linea = linea.strip("\n")   #toma la linea entera y le quita el \n
+    else:   #si la linea está vacia
+        linea = ";;"    
+    return linea.split(";") #devuelve una lista, con todos los valores separados
+    
+    
 
 
 
@@ -421,7 +448,7 @@ ejecucionActual={
 ejecucionActual["listaUsers"]=list(datos.keys()) #asigna a listaUsers una lista, que tiene como elementos todos los valores del diccionario "datos"
 
 
-nuevosUsuarios=open(r"nuevosUsuario.pkl","wb")  #si el archivo no existe lo crea
+nuevosUsuarios=open(r"nuevosUsuario.pkl","rb")  #si el archivo no existe lo crea
 usuariosPredefinidos=open(r"usuariosPredefinidos.csv","r")
 
 datosResultantes=mergePickleCsv(nuevosUsuarios,usuariosPredefinidos) #merge entre pickle y diccionario, a un unico diccionario llamado datos
