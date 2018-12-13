@@ -288,6 +288,8 @@ def crearUsuario():
     #------ guarda los datos en el archivo pickle
     with open(r"nuevosUsuario.pkl","wb") as registrarNuevoUsuario:
         dump(datosDelUsuario,registrarNuevoUsuario)
+		
+	#ACA ordena el archivo pickle<--
     
     ejecucionActual["listaUsers"].append(nombreDeUsuario)   #mete al usuario que se acaba de registrar, en la lista ejecucionActual["listaUsers"]
     datos.update (datosDelUsuario)   # mete el diccionario "datosDelUsuario", dentro de "datos"
@@ -396,19 +398,21 @@ def mergePickleCsv(archivoPickle, archivoCsv):   #recibe un archivo en formato c
     #lee el csv
     pseudonimo,nombre,apellido,contraseña,sexo,edad,latitud,longitud, intereses, likes,mensajes = leer_archivo(archivoCsv)
     while pseudonimo:
+        user = {
         pseudonimo: {
             "nombre": nombre,
             "apellido": apellido,
             "contraseña": contraseña,
             "sexo": sexo,
             "edad": edad,
-            "ubicacion": [longitud, latitud],
+            "ubicacion": [latitud,longitud],
             "intereses": intereses,
             "likes":likes,
             "mensajes": mensajes
-			}
-        mergeDeAmbos.update(pseudonimo)
+            }}
+        print(pseudonimo)
         pseudonimo,nombre,apellido,contraseña,sexo,edad,latitud,longitud, intereses, likes,mensajes = leer_archivo(archivoCsv)
+        print(pseudonimo)
     return mergeDeAmbos
     
 
@@ -418,7 +422,7 @@ def leer_archivo(archivo):
     if linea:   #si la linea tiene texto...
         linea = linea.strip("\n")   #toma la linea entera y le quita el \n
     else:   #si la linea está vacia
-        linea = ";;"    
+        linea = ""    
     return linea.split(";") #devuelve una lista, con todos los valores separados
     
     
