@@ -288,8 +288,8 @@ def crearUsuario():
     #------ guarda los datos en el archivo pickle
     with open(r"nuevosUsuario.pkl","wb") as registrarNuevoUsuario:
         dump(datosDelUsuario,registrarNuevoUsuario)
-		
-	#ACA ordena el archivo pickle<--
+        
+    #ACA ordena el archivo pickle<--
     
     ejecucionActual["listaUsers"].append(nombreDeUsuario)   #mete al usuario que se acaba de registrar, en la lista ejecucionActual["listaUsers"]
     datos.update (datosDelUsuario)   # mete el diccionario "datosDelUsuario", dentro de "datos"
@@ -410,9 +410,8 @@ def mergePickleCsv(archivoPickle, archivoCsv):   #recibe un archivo en formato c
             "likes":likes,
             "mensajes": mensajes
             }}
-        print(pseudonimo)
+        mergeDeAmbos.update(user)
         pseudonimo,nombre,apellido,contraseña,sexo,edad,latitud,longitud, intereses, likes,mensajes = leer_archivo(archivoCsv)
-        print(pseudonimo)
     return mergeDeAmbos
     
 
@@ -422,7 +421,7 @@ def leer_archivo(archivo):
     if linea:   #si la linea tiene texto...
         linea = linea.strip("\n")   #toma la linea entera y le quita el \n
     else:   #si la linea está vacia
-        linea = ""    
+        linea = ";;;;;;;;;;"    
     return linea.split(";") #devuelve una lista, con todos los valores separados
     
     
@@ -449,7 +448,6 @@ ejecucionActual={
     "listaUsers":[]
     }
 
-ejecucionActual["listaUsers"]=list(datos.keys()) #asigna a listaUsers una lista, que tiene como elementos todos los valores del diccionario "datos"
 
 
 nuevosUsuarios=open(r"nuevosUsuario.pkl","rb")  #si el archivo no existe lo crea
@@ -457,6 +455,8 @@ usuariosPredefinidos=open(r"usuariosPredefinidos.csv","r")
 
 datosResultantes=mergePickleCsv(nuevosUsuarios,usuariosPredefinidos) #merge entre pickle y diccionario, a un unico diccionario llamado datos
 datos.update(datosResultantes)   #actuliza el diccionario resultante al diccionario datos
+
+ejecucionActual["listaUsers"]=list(datos.keys()) #asigna a listaUsers una lista, que tiene como elementos todos los valores del diccionario "datos"
 
 nuevosUsuarios.close()
 usuariosPredefinidos.close()
