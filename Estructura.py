@@ -24,48 +24,71 @@ def menuPrincipal():
 Escriba el numero de opcion deseada: 
 """)
 		if opcionesMenuPrincipal == "1":
-			#imprime el diccionario de forma ordenada, recordar: los diccionarios no almacenan los valores de forma ordenada
-			pass
-			
+			nuevosUsuarios00=open(r"nuevosUsuario.pkl","rb")
+			usuariosPredefinidos00=open(r"usuariosPredefinidos.csv","r")
+			imprimirUsuarios(usuariosPredefinidos00,nuevosUsuarios00)
+			nuevosUsuarios00.close()
+			usuariosPredefinidos00.close()
 		elif opcionesMenuPrincipal == "2":
 			crearUsuario () # llama una func, la cual sirve para cargar datos, y esto aladirlos al diccionario principal, osea a "datos"
 			
 		elif opcionesMenuPrincipal == "3":
 			ingresarSistema ()
 		elif opcionesMenuPrincipal=="4":
-			#imprime el diccionario por la cantidad de likes que tengan los usuarios
-			print(top5())
-			#recorre el diccionario solo una vez y va tomando la cantidad de likes que tenga cada uno de los usuarios
-			#y los va almacenando los valores en una lista, (con un while, que su condicion esque la lista solo tenga una longitud de 5)
-			#finalmente imprime la lista completa, es decir el top 5 usuarios
-			pass
+			cantLikes,nombres=top5()	#desempaqueta las dos tuplas, en dos lista independientes
+			print("Los usuarios con más likes son...")
+			for usuario in zip(cantLikes,nombres):
+				print(usuario[1],"con",usuario[0],"likes")
 		elif opcionesMenuPrincipal=="5":
 			return
 		else:
 			print ("Por favor, ingrese una de las opciones")
 
 	
-def top5():
-	losTopFive=[]
-	losTopFiveNombres=[]
-	for usuarios in ejecucionActual["listaUsers"]:
-		print(datos[usuarios])
-		cantLikesDelUser = len(datos[usuarios]["likes"])
-		print(datos[usuarios]["likes"])
-		if len(losTopFive)==5:
-			break
-			
-			
-		else:
-			losTopFive.append(cantLikesDelUser)
-			losTopFiveNombres.append(usuarios)
-	print(losTopFive,"\n\n",losTopFiveNombres)
-
 
 	
 	
 	
+def imprimirUsuarios(archivocsv,archivopkl):
+	try:
+		usuariosDelPickle=load(archivopkl)
+	except EOFError:
+		pass
 	
+	linea = archivocsv.readline().strip("\n").split(";")
+	usuario,nombre,apellido,edad = linea[0],linea[1],linea[2],linea[5]
+	
+	while True:
+		linea = archivocsv.readline().strip("\n").split(";")
+		usuario,nombre,apellido,edad = linea[0],linea[1],linea[2],linea[5]
+		print(usuario,nombre,apellido,edad)
+		
+		
+	primerUserPickle=list(usuariosDelPickle.keys())[0]
+	
+	if usuario>primerUserPickle:
+		print(usuario,nombre,apellido,edad)
+	else:
+		print(primerUserPickle, usuariosDelPickle[primerUserPickle]["nombre"],usuariosDelPickle[primerUserPickle]["apellido"],usuariosDelPickle[primerUserPickle]["edad"])
+	return
+
+	
+
+'''
+	
+	linea = archivocsv.readline()
+	linea.strip("\n").split(";")
+	usuario,nombre,apellido,edad = lineas[0],lineas[1],lineas[2],lineas[5]
+	usuarioPickle = load(archivopkl)
+	for usuario in archivocsv:
+		for usuarioPickle[pseu] in usuarioPickle:
+			if usuarioPickle[pseu] > usuario:
+				print(usuario,nombre,apellido,edad)
+			else:
+				print(usuarioPickle[pseu],pseu[0],pseu[1],pseu[4])
+'''
+
+
 def ingresarSistema():
 	ejecucionActual["pseu"] = str (input ("Ingrese su nombre de usuario:"))
 	if ejecucionActual["pseu"] in ejecucionActual["listaUsers"]:
@@ -92,7 +115,11 @@ def menuSecundario():
 			hacerBusqueda(a,b,c)	#hacerBusqueda necesita 3 parametros
 			
 		elif opcionesMenuSecundario == "2":
-			mostrarMensajes()
+			nuevosUsuarios000=open(r"nuevosUsuario.pkl","rb")
+			usuariosPredefinidos000=open(r"usuariosPredefinidos.csv","r")
+			mostrarMensajes(usuariosPredefinidos000,nuevosUsuarios000)
+			nuevosUsuarios000.close()
+			usuariosPredefinidos000.close()
 		elif opcionesMenuSecundario == "3":
 			print ("Funcion aun sin terminar")
 		elif opcionesMenuSecundario == "4":
@@ -231,7 +258,7 @@ def calcularPorcentaje(interes1, interes2):	 # funcion que dadas dos listas, dev
 	return floor (((100 * acum) / (len (interes1) + len (interes2))))
 
 	
-
+'''
 def mostrarMensajes():#hacer un while que vaya mostrando todos los mensajes que tiene el usuario
 	if datos[ejecucionActual["pseu"]]["mensajes"]:
 		for mensajitos in range(len(list(datos[ejecucionActual["pseu"]]["mensajes"].values()))):
@@ -239,7 +266,32 @@ def mostrarMensajes():#hacer un while que vaya mostrando todos los mensajes que 
 			print ("'",list(datos[ejecucionActual["pseu"]]["mensajes"].values())[mensajitos],"'")
 	else:
 		print ("No tiene ningún mensaje.")
+'''
 
+def mostrarMensajes(archivocsv,archivopkl): # hacer un while que vaya mostrando todos los mensajes que tiene el usuario
+    linea = archivocsv.readline()
+    linea.strip("\n")
+    lineas = linea.split(";")
+    mensajes = lineas[10]
+    usuarioPickle = load(archivopkl)
+    if mensajes:
+        for mensajitos in range(len(mensajes.values())):
+            print("\ntienes un mensaje de: ", list(mensajes.keys()[mensajitos]))
+            print("'", list(mensajes.valus()[mensajitos]), "'")
+            resp = str(input("¿Desea responder el mensaje? s/n"))
+            if resp == "s" or resp=="S":
+                mensaje = str(input("Mensaje: "))
+                usuarioYMensaje = {ejecucionActual["pseu"]: mensaje}  # crea un diccionario, que tiene como clave el usuario actual, y valor el mensaje que le dejó el usuario
+                mensajes.update(usuarioYMensaje)  # actualiza el diccionario "mensajes" del usuario que está siendo buscado, es decir, al cual se le dejó el mensaje
+                ejecucionActual["listaUsers"][numeroDeUser] = ""  # de la lista "elimina" al usuario actual de la busqueda
+                menuSecundario()
+            elif resp=="n" or resp == "N":
+                menuSecundario()
+            else:
+                print("Ingrese una opcion valida s o n: ")
+
+    else:
+        print("No tiene ningún mensaje.")
 
 
 def definirSexoInt(sexoInteres):
@@ -303,7 +355,7 @@ def crearUsuario():
 		}}
 		
 	#------ guarda los datos en el archivo pickle
-	with open(r"nuevosUsuario.pkl","wb") as registrarNuevoUsuario:
+	with open(r"nuevosUsuario.pkl","rb+") as registrarNuevoUsuario:
 		dump(datosDelUsuario,registrarNuevoUsuario)
 		
 	#ACA ordena el archivo pickle<--
@@ -411,7 +463,6 @@ def mergePickleCsv(archivoPickle, archivoCsv):	 #recibe un archivo en formato cs
 	except EOFError:
 		pass
 		
-		
 	#lee el csv
 	pseudonimo,nombre,apellido,contraseña,sexo,edad,latitud,longitud, intereses, likes,mensajes = leer_archivo(archivoCsv)
 	while pseudonimo:
@@ -424,7 +475,7 @@ def mergePickleCsv(archivoPickle, archivoCsv):	 #recibe un archivo en formato cs
 			"edad": int(edad),
 			"ubicacion": [float(latitud),float(longitud)],
 			"intereses": intereses.split(","),
-			"likes":likes.strip("[]").split(","),
+			"likes":likes.strip("][").split(","),
 			"mensajes": mensajes
 			}}
 		# print(pseudonimo, intereses.split(","), likes.strip("[]").split(","))
@@ -443,7 +494,24 @@ def leer_archivo(archivo):
 	return linea.split(";") #devuelve una lista, con todos los valores separados
 	
 	
-
+	
+def top5():
+	losTopFive=[0,0,0,0,0]
+	losTopFiveNombres=["","","","",""]
+	for usuarios in ejecucionActual["listaUsers"]:
+		cantLikesDelUser = len(datos[usuarios]["likes"])
+		posicion=0
+		while posicion<5:
+			if cantLikesDelUser>losTopFive[posicion]:
+				losTopFive.insert(posicion,cantLikesDelUser)
+				losTopFiveNombres.insert(posicion,usuarios)
+				posicion=5
+			else:
+				posicion+=1
+		
+	return losTopFive[0:5],losTopFiveNombres[0:5]	#devuelve una tupla, con dos listas dentro
+	
+	
 
 
 	
@@ -468,7 +536,7 @@ ejecucionActual={
 
 
 
-nuevosUsuarios=open(r"nuevosUsuario.pkl","rb")	#si el archivo no existe lo crea
+nuevosUsuarios=open(r"nuevosUsuario.pkl","rb")
 usuariosPredefinidos=open(r"usuariosPredefinidos.csv","r")
 
 datosResultantes=mergePickleCsv(nuevosUsuarios,usuariosPredefinidos) #merge entre pickle y diccionario, a un unico diccionario llamado datos
