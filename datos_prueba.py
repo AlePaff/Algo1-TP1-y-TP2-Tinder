@@ -4,17 +4,19 @@ ejecucionActual={"pseu":"",	#va a contener el nombre del usuario que esté activ
 	"listaUsers":[]
 	}
 
+	
+	
 diccionarioPrueba={
 	
     "asd": {
-        "nombre": "Juan",
+        "nombre": "Sr. Asd",
         "apellido": "Rodriguez",
         "contraseña": "asd",  # contraseña
         "sexo": "M",
         "edad": 24,
         "ubicacion": [41.40338, 2.123],
         "intereses": ["tenis", "nadar", "pokemon", "anime", "escribir", "pintar", "taekwondo"],
-        "likes": [],
+        "likes": ["usuario1","juanita", "usuario1","usuario3"],
         "mensajes": {"algunUsuario":"soy un mesaje","juanita":"hola te deje un emensaje"},
     },
     "juanita":{
@@ -25,7 +27,7 @@ diccionarioPrueba={
         "edad":21,
         "ubicacion":[42.34567, 23.123],
         "intereses":["star-wars", "nueva-york", "fotografia", "francia", "asado", "bicicleta", "taekwondo","buenos-aires"],
-		"likes": ["asd"],
+		"likes": ["asd", "usuario1"],
         "mensajes": {},
     },
 	"usuario1":{
@@ -36,7 +38,7 @@ diccionarioPrueba={
         "edad":32,
         "ubicacion":[2.34567, 23.123],
         "intereses":["star-wars", "asado", "bicicleta", "taekwondo","buenos-aires"],
-		"likes": [],
+		"likes": ["usuario2"],
         "mensajes": {},
     },
 	"usuario2":{
@@ -58,7 +60,7 @@ diccionarioPrueba={
         "edad":75,
         "ubicacion":[2.4567, 3.123],
         "intereses":["star-wars","buenos-aires"],
-		"likes": ["asd"],
+		"likes": ["asd","usuario2"],
         "mensajes": {},
     },
 	"jhon": {
@@ -69,7 +71,7 @@ diccionarioPrueba={
         "edad": 67,
         "ubicacion": [21.40338, 1.123],
         "intereses": ["tenis", "nadar", "pokemon", "anime", "escribir", "pintar", "taekwondo"],
-        "likes": [],
+        "likes": ["usuario2"],
         "mensajes": {},
     },
     "unaUsuaria":{
@@ -80,7 +82,7 @@ diccionarioPrueba={
         "edad":21,
         "ubicacion":[42.94567, 23.123],
         "intereses":["star-wars", "nueva-york", "fotografia", "francia", "asado", "bicicleta", "taekwondo","buenos-aires"],
-		"likes": [],
+		"likes": ["ind"],
         "mensajes": {},
     },
 	"ind":{
@@ -113,7 +115,7 @@ diccionarioPrueba={
         "edad":36,
         "ubicacion":[2.4567, 4.123],
         "intereses":["star-wars","buenos-aires"],
-		"likes": [],
+		"likes": ["mascu","ind","unaUsuaria","usuario3","usuario2"],
         "mensajes": {},
     },
 }
