@@ -17,7 +17,7 @@ diccionarioPrueba={
         "ubicacion": [41.40338, 2.123],
         "intereses": ["tenis", "nadar", "pokemon", "anime", "escribir", "pintar", "taekwondo"],
         "likes": ["usuario1","juanita", "usuario1","usuario3"],
-        "mensajes": {"algunUsuario":"soy un mesaje","juanita":"hola te deje un emensaje"},
+        "mensajes": {'fem': ['hola todo bien', '¿como me dijiste?', 'chau nos vimos'], 'juanita': ['hola te deje un emensaje']},
     },
     "juanita":{
         "nombre":"Juana",
@@ -28,7 +28,7 @@ diccionarioPrueba={
         "ubicacion":[42.34567, 23.123],
         "intereses":["star-wars", "nueva-york", "fotografia", "francia", "asado", "bicicleta", "taekwondo","buenos-aires"],
 		"likes": ["asd", "usuario1"],
-        "mensajes": {},
+        "mensajes": {'asd': 'gracias lo lei'},
     },
 	"usuario1":{
         "nombre":"usuario1 (ind)",
