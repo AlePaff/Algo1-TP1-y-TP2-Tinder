@@ -1,0 +1,2 @@
+El programa se probó desde una maquina Windows 8. usando el IDLE de Python 3.7, de 32 bits
+con geopy instalado
