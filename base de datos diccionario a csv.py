@@ -1,6 +1,6 @@
 from datos_prueba import diccionarioPrueba
 
-nuevo = open("nuevaBase.csv","w")
+nuevo = open("usuariosPredefinidos.csv","w")
 
 claves=diccionarioPrueba.keys()
 
